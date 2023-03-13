@@ -1,14 +1,15 @@
 let userForm=document.getElementById("user-form");
 
 const retrieveEntries=()=>{
- let entries=localStorage.getItem("user-entries");
- if(entries){
-    entries=JSON.parse(entries);
- }else{
-    entries=[];
- }
- return entries;
-}
+    let entries=localStorage.getItem("user-entries");
+    if(entries){
+       entries=JSON.parse(entries);
+    }else{
+       entries=[];
+    }
+    return entries;
+   }
+   
 let userEntries=retrieveEntries();
 
 const displayEntries=()=>{
@@ -31,7 +32,8 @@ const tableEntries = entries.map((entry)=>{
     const emailCell=`<td class='border px-4 py-2'>${entry.email}</td>`;
     const passwordCell=`<td class='border px-4 py-2'>${entry.password}</td>`;
     const dobCell=`<td class='border px-4 py-2'>${entry.dob}</td>`;
-    const acceptTermsCell=`<td class='border px-4 py-2'>${entry.acceptTermsAndconditions}</td>`;
+    const acceptTermsCell=`<td class='border px-4 py-2'>${entry.acceptedTermsAndconditions ? "true" : "false"}</td>`;
+
 
     const row=`<tr>${nameCell} ${emailCell} ${passwordCell} ${dobCell} ${acceptTermsCell}</tr>`;
     return row;
@@ -56,7 +58,7 @@ const saveUserForm = (event)=>{
     const password=document.getElementById("password").value;
     const dob=document.getElementById("dob").value;
 
-    const acceptedTermsAndconditions = document.getElementById("acceptTerms").checked;
+    const acceptedTermsAndconditions = Boolean(document.getElementById("acceptTerms").checked);
 
     const entry={
         name,
@@ -66,11 +68,12 @@ const saveUserForm = (event)=>{
         acceptedTermsAndconditions
     };
 
-userEntries.push(entry);
+    userEntries.push(entry);
 
-localStorage.setItem("user-entries", JSON.stringify(userEntries));
-displayEntries();
+    localStorage.setItem("user-entries", JSON.stringify(userEntries));
+    displayEntries();
 }
 
 userForm.addEventListener("submit", saveUserForm);
 displayEntries();
+
